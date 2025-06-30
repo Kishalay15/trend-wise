@@ -185,8 +185,8 @@ export default function HomePage() {
               No articles yet
             </h3>
             <p className="text-gray-600 text-center max-w-md">
-              We're working on bringing you amazing content. Check back soon for
-              the latest insights and trends.
+              We are working on bringing you amazing content. Check back soon
+              for the latest insights and trends.
             </p>
           </div>
         )}
