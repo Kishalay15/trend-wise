@@ -87,6 +87,16 @@ export default function HomePage() {
               </button>
             </div>
           )}
+          {status !== "authenticated" && (
+            <div className="mt-2">
+              <Link
+                href="/login"
+                className="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+              >
+                Login
+              </Link>
+            </div>
+          )}
         </div>
       </header>
 
