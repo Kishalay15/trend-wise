@@ -8,7 +8,9 @@ const router = express.Router();
 
 router.post("/generate", async (req, res) => {
   const userEmail = req.headers["x-user-email"];
-  if (userEmail !== "lahirikishalay@gmail.com") {
+  const adminEmails = process.env.ADMIN_EMAILS?.split(",").map((e) => e.trim());
+
+  if (!adminEmails.includes(userEmail)) {
     return res.status(403).json({ error: "Unauthorized" });
   }
 

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import ArticleCard from "@/components/ArticleCard";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import Head from "next/head";
 
 export default function HomePage() {
@@ -11,8 +11,9 @@ export default function HomePage() {
   const [error, setError] = useState(null);
   const [isRetrying, setIsRetrying] = useState(false);
   const { data: session, status } = useSession();
+  const ADMIN_EMAILS = process.env.NEXT_PUBLIC_ADMIN_EMAILS?.split(",") || [];
 
-  const isAdmin = session?.user?.email === "lahirikishalay@gmail.com";
+  const isAdmin = ADMIN_EMAILS.includes(session?.user?.email);
 
   const fetchArticles = async () => {
     try {
@@ -74,6 +75,16 @@ export default function HomePage() {
               >
                 Go to Admin
               </Link>
+            </div>
+          )}
+          {status === "authenticated" && (
+            <div className="mt-2">
+              <button
+                onClick={() => signOut({ callbackUrl: "/login" })}
+                className="mt-2 inline-block px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
+              >
+                Logout
+              </button>
             </div>
           )}
         </div>

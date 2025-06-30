@@ -8,14 +8,19 @@ export default function AdminPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const ADMIN_EMAILS = process.env.NEXT_PUBLIC_ADMIN_EMAILS?.split(",") || [];
 
   useEffect(() => {
     if (status === "unauthenticated") router.push("/login");
   }, [status]);
 
   if (status === "loading") return <p className="p-6">Loading...</p>;
-  if (session?.user?.email !== "lahirikishalay@gmail.com")
+  // if (session?.user?.email !== "lahirikishalay@gmail.com")
+  //   return <p>Access Denied</p>;
+
+  if (!ADMIN_EMAILS.includes(session?.user?.email)) {
     return <p>Access Denied</p>;
+  }
 
   const generateArticle = async () => {
     try {
@@ -44,7 +49,7 @@ export default function AdminPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 p-8">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 p-8 text-black">
       <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
       <button
         onClick={generateArticle}
