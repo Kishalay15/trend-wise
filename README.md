@@ -1,4 +1,3 @@
-
 # TrendWise
 
 TrendWise is a full-stack web application that automatically generates SEO-optimized blog articles from trending topics on Google. It uses Puppeteer to scrape trending searches, Gemini API to generate articles, and a clean frontend built with Next.js to display them. Admins can trigger content generation manually, and users can read insightful, up-to-date content effortlessly.

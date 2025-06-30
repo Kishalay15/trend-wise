@@ -14,12 +14,29 @@ export default function AdminPage() {
     if (status === "unauthenticated") router.push("/login");
   }, [status]);
 
-  if (status === "loading") return <p className="p-6">Loading...</p>;
-  // if (session?.user?.email !== "lahirikishalay@gmail.com")
-  //   return <p>Access Denied</p>;
+  useEffect(() => {
+    if (
+      status === "authenticated" &&
+      !ADMIN_EMAILS.includes(session?.user?.email)
+    ) {
+      toast.error("You are not authorized to access this page");
+    }
+  }, [status, session]);
+
+  if (status === "loading") {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-6 h-6 border-2 border-gray-200 border-t-gray-900 rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   if (!ADMIN_EMAILS.includes(session?.user?.email)) {
-    return <p>Access Denied</p>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-600">Access denied</p>
+      </div>
+    );
   }
 
   const generateArticle = async () => {
@@ -49,15 +66,29 @@ export default function AdminPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 p-8 text-black">
-      <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
-      <button
-        onClick={generateArticle}
-        disabled={loading}
-        className="px-6 py-3 bg-purple-600 text-white font-medium rounded hover:bg-purple-700 transition disabled:opacity-50"
-      >
-        {loading ? "Generating..." : "Generate Article"}
-      </button>
+    <div className="min-h-screen bg-white">
+      <div className="max-w-2xl mx-auto px-6 py-16">
+        <div className="text-center">
+          <h1 className="text-2xl font-semibold text-gray-900 mb-8">
+            Admin Dashboard
+          </h1>
+
+          <button
+            onClick={generateArticle}
+            disabled={loading}
+            className="inline-flex items-center px-6 py-3 bg-gray-900 text-white font-medium rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            {loading ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                Generating...
+              </>
+            ) : (
+              "Generate Article"
+            )}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
