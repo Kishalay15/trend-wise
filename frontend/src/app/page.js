@@ -4,12 +4,15 @@ import axios from "axios";
 import ArticleCard from "@/components/ArticleCard";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import Head from "next/head";
 
 export default function HomePage() {
   const [articles, setArticles] = useState(null);
   const [error, setError] = useState(null);
   const [isRetrying, setIsRetrying] = useState(false);
   const { data: session, status } = useSession();
+
+  const isAdmin = session?.user?.email === "lahirikishalay@gmail.com";
 
   const fetchArticles = async () => {
     try {
@@ -37,6 +40,23 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50">
       {/* Header Section */}
+      <Head>
+        <title>TrendWise – Discover Trending Content</title>
+        <meta
+          name="description"
+          content="Automatically generated blogs on trending topics using Gemini AI."
+        />
+        <meta
+          property="og:title"
+          content="TrendWise – AI-Powered Trending Articles"
+        />
+        <meta
+          property="og:description"
+          content="Explore blogs generated from real-time Google Trends using Gemini."
+        />
+        <meta property="og:type" content="website" />
+      </Head>
+
       <header className="pt-12 pb-8">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent">
@@ -46,17 +66,16 @@ export default function HomePage() {
             Discover the latest insights and trending topics that shape our
             world
           </p>
-          {status === "authenticated" &&
-            session?.user?.email === "lahirikishalay@gmail.com" && (
-              <div className="mt-4">
-                <Link
-                  href="/admin"
-                  className="inline-block px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition"
-                >
-                  Go to Admin
-                </Link>
-              </div>
-            )}
+          {status === "authenticated" && isAdmin && (
+            <div className="mt-4">
+              <Link
+                href="/admin"
+                className="inline-block px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition"
+              >
+                Go to Admin
+              </Link>
+            </div>
+          )}
         </div>
       </header>
 
