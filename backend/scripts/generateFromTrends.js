@@ -68,9 +68,6 @@ async function main() {
     logger.info(`New article saved: ${articleData.slug}`);
   } catch (err) {
     logger.error(`Script error: ${err.message}`);
-  } finally {
-    await mongoose.connection.close();
-    logger.info("Disconnected from MongoDB");
   }
 }
 

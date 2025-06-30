@@ -9,7 +9,7 @@ export default function HomePage() {
   const [articles, setArticles] = useState(null);
   const [error, setError] = useState(null);
   const [isRetrying, setIsRetrying] = useState(false);
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   const fetchArticles = async () => {
     try {
@@ -46,9 +46,17 @@ export default function HomePage() {
             Discover the latest insights and trending topics that shape our
             world
           </p>
-          {session?.user?.email === "lahirikishalay@gmail.com" && (
-            <Link href="/admin">Admin</Link>
-          )}
+          {status === "authenticated" &&
+            session?.user?.email === "lahirikishalay@gmail.com" && (
+              <div className="mt-4">
+                <Link
+                  href="/admin"
+                  className="inline-block px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition"
+                >
+                  Go to Admin
+                </Link>
+              </div>
+            )}
         </div>
       </header>
 
