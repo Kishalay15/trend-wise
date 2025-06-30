@@ -9,7 +9,7 @@ export async function getTrendingTopic() {
   try {
     const browser = await puppeteer.launch({
       headless: true,
-      executablePath: process.env.CHROMIUM_PATH || "/usr/bin/chromium",
+      executablePath: process.env.CHROMIUM_PATH,
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
 
@@ -64,7 +64,7 @@ async function main() {
         await newArticle.save();
         logger.info(`New article saved: ${articleData.slug}`);
 
-        return; // 👈 generate and save only one article
+        return;
       } else {
         logger.info(`Skipping already existing topic: ${topic}`);
       }
