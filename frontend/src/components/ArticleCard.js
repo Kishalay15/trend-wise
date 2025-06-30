@@ -18,7 +18,7 @@ export default function ArticleCard({ article }) {
           </h2>
         </Link>
         <p className="text-gray-600 text-sm leading-relaxed line-clamp-3 mb-4 flex-grow">
-          {article.metaDesc}
+          {article.metaDesc.replace(/\*\*/g, "")}
         </p>
 
         {/* Read more link */}

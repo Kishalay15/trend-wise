@@ -2,12 +2,12 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
-// import DebugUser from "@/components/DebugUser";
 import dynamic from "next/dynamic";
 import CommentForm from "@/components/CommentForm";
 import CommentList from "@/components/CommentList";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import Head from "next/head";
 
 const DebugUser = dynamic(() => import("@/components/DebugUser"), {
   ssr: false,
@@ -194,7 +194,6 @@ export default function ArticlePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50">
-      {/* Navigation Bar */}
       <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200/50">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
           <button
@@ -237,6 +236,15 @@ export default function ArticlePage() {
           </div>
         </div>
       </nav>
+
+      <Head>
+        <title>{article.title}</title>
+        <meta name="description" content={article.metaDesc} />
+        <meta property="og:title" content={article.title} />
+        <meta property="og:description" content={article.metaDesc} />
+        <meta property="og:type" content="article" />
+      </Head>
+
       <main className="max-w-4xl mx-auto px-6 pb-16">
         <article className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200/50 overflow-hidden">
           <div className="prose prose-lg prose-purple max-w-none p-8 md:p-12">
