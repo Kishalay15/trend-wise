@@ -6,6 +6,7 @@ import { errorHandler } from "./middleware/errorHandler.js";
 import logger from "./utils/logger.js";
 import articleRoutes from "./routes/articles.js";
 import commentRoutes from "./routes/comments.js";
+import adminRoutes from "./routes/admin.js";
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 
 app.use("/api/articles", articleRoutes);
 app.use("/api/comments", commentRoutes);
+app.use("/api/admin", adminRoutes);
 
 app.use(errorHandler);
 

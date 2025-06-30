@@ -2,16 +2,16 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
-import dynamic from "next/dynamic";
+// import dynamic from "next/dynamic";
 import CommentForm from "@/components/CommentForm";
 import CommentList from "@/components/CommentList";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Head from "next/head";
 
-const DebugUser = dynamic(() => import("@/components/DebugUser"), {
-  ssr: false,
-});
+// const DebugUser = dynamic(() => import("@/components/DebugUser"), {
+//   ssr: false,
+// });
 
 export default function ArticlePage() {
   const { slug } = useParams();
@@ -282,7 +282,7 @@ export default function ArticlePage() {
             Back to Top
           </button>
         </div>
-        <DebugUser />
+        {/* {process.env.NODE_ENV === "development" && <DebugUser />} */}
       </main>
     </div>
   );

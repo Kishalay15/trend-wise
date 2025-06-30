@@ -2,11 +2,14 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ArticleCard from "@/components/ArticleCard";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export default function HomePage() {
   const [articles, setArticles] = useState(null);
   const [error, setError] = useState(null);
   const [isRetrying, setIsRetrying] = useState(false);
+  const { data: session } = useSession();
 
   const fetchArticles = async () => {
     try {
@@ -43,6 +46,9 @@ export default function HomePage() {
             Discover the latest insights and trending topics that shape our
             world
           </p>
+          {session?.user?.email === "lahirikishalay@gmail.com" && (
+            <Link href="/admin">Admin</Link>
+          )}
         </div>
       </header>
 
