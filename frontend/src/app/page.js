@@ -132,8 +132,8 @@ export default function HomePage() {
               No Articles Yet
             </h3>
             <p className="text-gray-600 max-w-md mx-auto">
-              We're working hard to bring you amazing content. Check back soon
-              for the latest insights and trends!
+              We&apos;re working hard to bring you amazing content. Check back
+              soon for the latest insights and trends!
             </p>
           </div>
         )}
