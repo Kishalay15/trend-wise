@@ -1,12 +1,18 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import slugify from "slugify";
 import dotenv from "dotenv";
+import logger from "./logger.js";
 
 dotenv.config();
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 export async function generateArticleFromTopic(topic) {
+  if (typeof topic !== "string") {
+    logger.warn(`Expected topic to be a string but got: ${typeof topic}`);
+    topic = String(topic);
+  }
+
   const model = genAI.getGenerativeModel({
     model: "gemini-1.5-flash",
   });
@@ -31,7 +37,7 @@ Ensure the content is formatted as markdown or HTML.
 
     return {
       title: titleMatch ? titleMatch[1].trim() : topic,
-      slug: slugify(topic.toLowerCase()),
+      slug: slugify(String(topic).toLowerCase()),
       metaDesc: metaMatch ? metaMatch[1].trim() : `A deep dive into ${topic}`,
       content: articleText,
       media: [],

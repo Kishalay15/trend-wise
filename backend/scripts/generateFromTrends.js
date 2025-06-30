@@ -4,7 +4,6 @@ import puppeteer from "puppeteer";
 import { generateArticleFromTopic } from "../utils/generateArticle.js";
 import Article from "../models/Article.js";
 import logger from "../utils/logger.js";
-import { load } from "cheerio";
 
 export async function getTrendingTopic() {
   try {
@@ -23,20 +22,19 @@ export async function getTrendingTopic() {
       }
     );
 
-    // Wait for the element to appear
     await page.waitForSelector("div.mZ3RIc", { timeout: 20000 });
 
-    // Extract the text content of the first topic
-    const topic = await page.evaluate(() => {
-      const topicElement = document.querySelector("div.mZ3RIc");
-      return topicElement?.textContent?.trim() || null;
+    const topics = await page.evaluate(() => {
+      const topicElements = Array.from(document.querySelectorAll("div.mZ3RIc"));
+      // return topicElement?.textContent?.trim() || null;
+      return topicElements.map((el) => el.textContent.trim()).filter(Boolean);
     });
 
     await browser.close();
 
-    if (!topic) throw new Error("No trending topic found in .mZ3RIc");
+    if (!topics.length) throw new Error("No trending topics found");
 
-    return topic;
+    return topics;
   } catch (error) {
     logger.error(
       `Error fetching trending topic with Puppeteer: ${error.message}`
@@ -50,22 +48,28 @@ async function main() {
     await mongoose.connect(process.env.MONGO_URI);
     logger.info("Connected to MongoDB");
 
-    const topic = await getTrendingTopic();
-    if (!topic) throw new Error("No trending topic found.");
+    const topics = await getTrendingTopic();
+    if (!topics) throw new Error("No trending topics retrieved.");
 
-    logger.info(`Trending Topic: "${topic}"`);
+    for (const topic of topics) {
+      const slug = topic.toLowerCase().replace(/\s+/g, "-");
+      const exists = await Article.findOne({ slug });
 
-    const articleData = await generateArticleFromTopic(topic);
-    const exists = await Article.findOne({ slug: articleData.slug });
+      if (!exists) {
+        logger.info(`Selected Topic: "${topic}"`);
 
-    if (exists) {
-      logger.warn(`Article already exists: ${articleData.slug}`);
-      return;
+        const articleData = await generateArticleFromTopic(topic);
+        const newArticle = new Article(articleData);
+        await newArticle.save();
+        logger.info(`New article saved: ${articleData.slug}`);
+
+        return; // 👈 generate and save only one article
+      } else {
+        logger.info(`Skipping already existing topic: ${topic}`);
+      }
     }
 
-    const newArticle = new Article(articleData);
-    await newArticle.save();
-    logger.info(`New article saved: ${articleData.slug}`);
+    logger.warn("No new trending topics available to generate article.");
   } catch (err) {
     logger.error(`Script error: ${err.message}`);
   }
