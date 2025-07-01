@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
+import Link from "next/link";
 
 export default function CommentForm({ slug, onCommentPosted }) {
   const { data: session } = useSession();
@@ -15,7 +16,12 @@ export default function CommentForm({ slug, onCommentPosted }) {
       <div className="mt-8 border rounded p-6 text-center">
         <p className="text-gray-600 mb-3">Sign in to leave a comment</p>
         <button className="px-4 py-2 bg-gray-900 text-white rounded hover:bg-gray-800">
-          Sign In
+          <Link
+            href="/login"
+            className="px-4 py-2 text-sm font-medium bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors"
+          >
+            Sign in
+          </Link>
         </button>
       </div>
     );
