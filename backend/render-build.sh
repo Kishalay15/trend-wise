@@ -17,7 +17,8 @@
 
 echo "🛠️ Running render-build.sh..."
 
-# Remove apt-get and chromium stuff
+export PUPPETEER_CACHE_DIR="./.cache/puppeteer"
+
 # Install dependencies (includes puppeteer with Chromium)
 npm install
 echo "✅ Dependencies installed"

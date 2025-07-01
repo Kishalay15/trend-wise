@@ -10,7 +10,7 @@ export async function getTrendingTopic() {
     const browser = await puppeteer.launch({
       headless: "new",
       // executablePath: process.env.CHROMIUM_PATH,
-      executablePath: puppeteer.executablePath(),
+      // executablePath: puppeteer.executablePath(),
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
 
