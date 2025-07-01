@@ -1,6 +1,6 @@
 import "dotenv/config";
 import mongoose from "mongoose";
-import puppeteer from "puppeteer-core";
+import puppeteer from "puppeteer";
 import { generateArticleFromTopic } from "../utils/generateArticle.js";
 import Article from "../models/Article.js";
 import logger from "../utils/logger.js";
@@ -8,8 +8,9 @@ import logger from "../utils/logger.js";
 export async function getTrendingTopic() {
   try {
     const browser = await puppeteer.launch({
-      headless: true,
-      executablePath: process.env.CHROMIUM_PATH,
+      headless: "new",
+      // executablePath: process.env.CHROMIUM_PATH,
+      executablePath: puppeteer.executablePath(),
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
 
